@@ -12,6 +12,7 @@ public class RotateMenu : MonoBehaviour
     private int first = -5;
     private List<Button> buttons = new List<Button>();
     private Button[] carousel;
+    public Button SelectedMusic;
 
     // Start is called before the first frame update
     void Start()
@@ -38,7 +39,6 @@ public class RotateMenu : MonoBehaviour
         foreach (Button i in buttons)
         {
             i.gameObject.SetActive(false);
-            i.GetComponentInChildren<Text>().text = count.ToString();
             count++;
         }
 
@@ -65,23 +65,27 @@ public class RotateMenu : MonoBehaviour
     {
         bool isOpacity = true;
         float opacity = 0;
+        
         for (int i = 0; i < carousel.Length; i++)
         {
             if (carousel[i] != null)
             {
-                var color = carousel[i].targetGraphic.color;
-                if(opacity == 1f)
+                var color = carousel[i].GetComponent<Image>().color;
+                if (opacity == 1f)
                 {
                     carousel[i].GetComponent<RectTransform>().sizeDelta = new Vector2(200, 200);
-
-                    color = new Color(0f, 1f, 0f, opacity);
+                    color.a = opacity;
+                    carousel[i].GetComponent<Image>().color = color;
+                    OnChange(carousel[i]);
                 }
                 else
                 {
+                    
+
                     carousel[i].GetComponent<RectTransform>().sizeDelta = new Vector2(150, 150);
-                    color = new Color(1f, 1f, 1f, opacity);
+                    color.a = opacity;
+                    carousel[i].GetComponent<Image>().color = color;
                 }
-                carousel[i].targetGraphic.color = color;
                 if (carousel[i].targetGraphic.color.a <= 0f)
                 {
                     
@@ -152,5 +156,22 @@ public class RotateMenu : MonoBehaviour
             }
 
         }
+    }
+
+
+    void OnChange(Button music)
+    {
+        if (SelectedMusic != null)
+        {
+            SelectedMusic.GetComponentInChildren<AudioSource>().Stop();
+        }
+        SelectedMusic = music;
+        
+        SelectedMusic.GetComponentInChildren<AudioSource>().Play();
+        GameObject.Find("SelectImage").GetComponent<Image>().sprite = music.GetComponent<Image>().sprite;
+        GameObject.Find("SelectArtist").GetComponent<Text>().text = music.transform.Find("Artist").GetComponent<Text>().text;
+        GameObject.Find("SelectTitle").GetComponent<Text>().text = music.transform.Find("Title").GetComponent<Text>().text;
+
+
     }
 }

@@ -63,6 +63,7 @@ public class AnimPanel : MonoBehaviour
                 panelrect.offsetMin = new Vector2(0, l);
                 l -= 1;
             }
+            
         }
     }
 }
