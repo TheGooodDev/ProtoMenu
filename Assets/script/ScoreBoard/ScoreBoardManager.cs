@@ -8,18 +8,32 @@ using UnityEngine.UI;
 public class ScoreBoardManager : MonoBehaviour
 {
     public GameObject rowPrefab;
+    private string save = "";
     public Transform rowsParent;
 
     private void Start()
     {
-        GiveRandomScore();
-
+    }
+    private void Update()
+    {
+        GameObject thePlayer = GameObject.Find("Pivot");
+        RotateMenu playerScript = thePlayer.GetComponent<RotateMenu>();
+        string title = playerScript.SelectedMusic.transform.Find("Title").GetComponent<Text>().text;
+        if (title != save)
+        {
+            GetScoreBoard(title);
+        }
+        save = title;
     }
 
-
-    public List<Score> GetScoreBoard(string music)
+    public void GetScoreBoard(string music)
     {
-        var reader = new StreamReader(File.OpenRead(@".\Assets\Audio\" + music + "\\Classeur1.csv"));
+        foreach(Transform item in rowsParent)
+        {
+            Destroy(item.gameObject);
+        }
+
+        var reader = new StreamReader(File.OpenRead(@".\Assets\Audio\" + music + "\\Highscore.csv"));
         List<string> listA = new List<string>();
         List<string> listB = new List<string>();
         List<Score> AllScore = new List<Score>();
@@ -37,19 +51,26 @@ public class ScoreBoardManager : MonoBehaviour
             score.Scoring = Int32.Parse(listB[i]);
             AllScore.Add(score);
         }
-        foreach(Score score in AllScore)
+        AllScore.Sort((x, y) => x.Scoring.CompareTo(y.Scoring));
+        AllScore.Reverse();
+        int position = 1;
+        foreach (Score score in AllScore)
         {
-            Debug.Log(score);
+            GameObject newGo = Instantiate(rowPrefab, rowsParent);
+            Text[] texts = newGo.GetComponentsInChildren<Text>();
+            texts[0].text = position.ToString();
+            texts[1].text = score.Name;
+            texts[2].text = score.Scoring.ToString();
+            Debug.Log(score.Name+" "+score.Scoring);
+            position++;
         }
-        return AllScore;
-
     }
 
     void OnScoreboardGet()
     {
 
     }
-
+    /*
     public Scores GiveRandomScore()
     {
         GameObject[] btn = GameObject.FindGameObjectsWithTag("Music");
@@ -74,6 +95,7 @@ public class ScoreBoardManager : MonoBehaviour
         scores.Allscores = AllScore;
         return scores;
     }
+    */
 
 
     public struct Scores
