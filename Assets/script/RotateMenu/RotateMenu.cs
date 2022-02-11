@@ -52,8 +52,8 @@ public class RotateMenu : MonoBehaviour
         {
             if(carousel[i] != null)
             {
-                float xpos = Mathf.Sin(angle * -i) * 700;
-                float ypos = Mathf.Cos(angle * -i) * 500;
+                float xpos = Mathf.Sin(angle * -i) * 600;
+                float ypos = Mathf.Cos(angle * -i) * 600;
                 carousel[i].transform.position = new Vector2(this.transform.position.x + xpos, this.transform.position.y + ypos);
                 
             }
@@ -73,7 +73,8 @@ public class RotateMenu : MonoBehaviour
                 var color = carousel[i].GetComponent<Image>().color;
                 if (opacity == 1f)
                 {
-                    carousel[i].GetComponent<RectTransform>().sizeDelta = new Vector2(200, 200);
+                    carousel[i].transform.SetAsLastSibling();
+                    carousel[i].GetComponent<RectTransform>().localScale = new Vector2(1.25f, 1.25f) ;
                     color.a = opacity;
                     carousel[i].GetComponent<Image>().color = color;
                     OnChange(carousel[i]);
@@ -82,7 +83,7 @@ public class RotateMenu : MonoBehaviour
                 {
                     
 
-                    carousel[i].GetComponent<RectTransform>().sizeDelta = new Vector2(150, 150);
+                    carousel[i].GetComponent<RectTransform>().localScale = new Vector2(1, 1);
                     color.a = opacity;
                     carousel[i].GetComponent<Image>().color = color;
                 }
@@ -167,9 +168,11 @@ public class RotateMenu : MonoBehaviour
         SelectedMusic = music;
         
         SelectedMusic.GetComponentInChildren<AudioSource>().Play();
-        GameObject.Find("SelectImage").GetComponent<Image>().sprite = music.GetComponent<Image>().sprite;
+        GameObject.Find("SelectImage").GetComponent<Image>().sprite = music.transform.Find("SongImg").GetComponent<Image>().sprite;
         GameObject.Find("SelectArtist").GetComponent<Text>().text = music.transform.Find("Artist").GetComponent<Text>().text;
         GameObject.Find("SelectTitle").GetComponent<Text>().text = music.transform.Find("Title").GetComponent<Text>().text;
+        GameObject.Find("SelectBpm").GetComponent<Text>().text = music.transform.Find("Bpm").GetComponent<Text>().text;
+        GameObject.Find("SelectTime").GetComponent<Text>().text = music.transform.Find("Duration").GetComponent<Text>().text;
 
 
     }

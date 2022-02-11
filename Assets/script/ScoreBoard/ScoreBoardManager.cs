@@ -44,7 +44,7 @@ public class ScoreBoardManager : MonoBehaviour
         listA.Add(values[0]);
         listB.Add(values[1]);
         }
-        for(int i = 0; i < listA.Count; i++)
+        for(int i = 0; i < 5; i++)
         {
             Score score = new Score();
             score.Name = listA[i];
@@ -58,9 +58,8 @@ public class ScoreBoardManager : MonoBehaviour
         {
             GameObject newGo = Instantiate(rowPrefab, rowsParent);
             Text[] texts = newGo.GetComponentsInChildren<Text>();
-            texts[0].text = position.ToString();
-            texts[1].text = score.Name;
-            texts[2].text = score.Scoring.ToString();
+            texts[0].text = score.Name;
+            texts[1].text = score.Scoring.ToString();
             Debug.Log(score.Name+" "+score.Scoring);
             position++;
         }
