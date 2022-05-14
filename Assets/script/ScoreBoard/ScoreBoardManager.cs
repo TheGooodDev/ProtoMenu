@@ -58,9 +58,9 @@ public class ScoreBoardManager : MonoBehaviour
         {
             GameObject newGo = Instantiate(rowPrefab, rowsParent);
             Text[] texts = newGo.GetComponentsInChildren<Text>();
-            texts[0].text = score.Name;
-            texts[1].text = score.Scoring.ToString();
-            Debug.Log(score.Name+" "+score.Scoring);
+            texts[0].text = position.ToString();
+            texts[1].text = score.Name;
+            texts[2].text = score.Scoring.ToString();
             position++;
         }
     }
@@ -69,32 +69,6 @@ public class ScoreBoardManager : MonoBehaviour
     {
 
     }
-    /*
-    public Scores GiveRandomScore()
-    {
-        GameObject[] btn = GameObject.FindGameObjectsWithTag("Music");
-        string[] AllPseudo = new string[9] { "Cedric", "Jordan", "Felicien", "Francois", "Guillaume", "Mathieu", "Valentin", "Henri", "Line" };
-
-        Scores scores = new Scores();
-
-        List<Score> AllScore = new List<Score>();
-        foreach (GameObject music in btn)
-        {
-            string Title = music.transform.Find("Title").GetComponent<Text>().text;
-            for (int i = 0; i < AllPseudo.Length; i++)
-            {
-                Score randomscore = new Score(AllPseudo[i], UnityEngine.Random.Range(1, 100000));
-                AllScore.Add(randomscore);
-                TextWriter tw = new StreamWriter(".\\Assets\\Audio\\" + Title + "\\Highscore.csv", true);
-                tw.WriteLine(randomscore.Name + ";" + randomscore.Scoring.ToString());
-                //tw.Write("");
-                tw.Close();
-            }
-        }
-        scores.Allscores = AllScore;
-        return scores;
-    }
-    */
 
 
     public struct Scores
@@ -107,7 +81,7 @@ public class ScoreBoardManager : MonoBehaviour
         public string Name;
         public int Scoring;
 
-        public Score(string pseudo, int scoring)
+        public Score(string pseudo, int scoring,int rank)
         {
             this.Name = pseudo;
             this.Scoring = scoring;
